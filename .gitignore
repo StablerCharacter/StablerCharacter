@@ -1,3 +1,8 @@
+# Unwanted Directories
+.vs/
+x64/
+Sandbox/x64
+
 # Prerequisites
 *.d
 
@@ -6,6 +11,7 @@
 *.lo
 *.o
 *.obj
+*.user
 
 # Precompiled Headers
 *.gch
