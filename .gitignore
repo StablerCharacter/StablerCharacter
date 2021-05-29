@@ -36,3 +36,5 @@ Sandbox/x64
 *.exe
 *.out
 *.app
+
+pyarcade/__pycache__/

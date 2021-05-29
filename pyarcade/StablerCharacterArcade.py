@@ -3,83 +3,89 @@ import arcade.gui
 from arcade.gui import UIManager
 from orjson import loads
 from traceback import print_exc
+from DefaultMainMenu import *
 
-gconfig = None
+global gconfig
 global WINDOW_INFO
-WINDOW_INFO = {'width': 800, 'height': 600, 'title': "Hello world", 'windowbg': arcade.color.BLACK}
-storyList = ["Hello world!"]
-inGameCharacters = 1
-isGameRunning = False
+WINDOW_INFO:dict = {'width': 800, 'height': 600, 'title': "Test!"}
+storyList:list = ["Hello world!"]
+global PROJECT_INFO
+PROJECT_INFO:dict = {"name": "Game"}
+global GameViewInfo
+GameViewInfo:dict = {"bgcolor": arcade.csscolor.CORNFLOWER_BLUE}
 
 try:
-    f = open("sconfig.json", "r")
-    gconfig = loads(f.read())
-    f.close()
+	f = open("sconfig.json", "r")
+	gconfig = loads(f.read())
+	f.close()
 except FileNotFoundError:
-    print("Configuration file not found. exiting...")
-    print_exc()
+	print("Configuration file not found. exiting...")
+	print_exc()
 except Exception:
-    print_exc()
-
-try:
-    storyList = gconfig['storylist']
-except KeyError:
-    pass
+	print_exc()
 
 def setWindowInfo(nWindowInfo):
-    WINDOW_INFO = nWindowInfo
+	WINDOW_INFO = nWindowInfo
 
-def setStoryList(nStoryList, characters=1):
-    storyList = nStoryList
-    inGameCharacters = characters
+def setGameName(gamename):
+	PROJECT_INFO["name"] = gamename
 
-def setBackgroundColor(color):
-    WINDOW_INFO['windowbg'] = color
+def setGameViewBackgroundColor(color):
+	GameViewInfo["bgcolor"] = color
 
-class MainGameView(arcade.View):
-    def __init__(self, storyList, inGameCharacters):
-        super().__init__()
-        self.storyList = storyList
-        self.inGameCharacters = inGameCharacters
-        self.storyIndex = 0
-    
-    def on_draw(self):
-        arcade.start_render()
-        arcade.draw_text(self.storyList[self.storyIndex], 240, 400, arcade.color.WHITE, 54)
+class GameView(arcade.View):
+	def __init__(self):
+		# Call the parent class and set up the window
+		super().__init__()
 
-    def on_mouse_press(self, _x, _y, _button, _modifiers):
-        self.storyIndex += 1;
+		self.storyIndex = 0
 
-class MainGame(arcade.Window):
-    def __init__(self):
-        global WINDOW_INFO
-        super().__init__(WINDOW_INFO['width'], WINDOW_INFO['height'], WINDOW_INFO['title'])
-        self.index = 0
+	def setup(self):
+		""" Setup the game here. Call this function to restart the game. """
+		pass
 
-        arcade.set_background_color(arcade.csscolor.CORNFLOWER_BLUE)
-        self.text = "Hello world!"
+	def on_draw(self):
+		""" Render the screen. """
 
-    def setup(self):
-        pass
+		arcade.start_render()
 
-    def getDialogIndex(self):
-        return self.index
+		arcade.draw_text(storyList[self.storyIndex], WINDOW_INFO["width"] / 2, WINDOW_INFO["height"] / 2, arcade.color.WHITE, font_size=18, anchor_x="center")
 
-def start(runOnOtherThread=False):
-    global isGameRunning
-    if isGameRunning:
-        raise RuntimeError("The game is already running.")
-        return
-    if not runOnOtherThread:
-        global window
-        window = MainGame()
-        # mainView = MainGameView(storyList, inGameCharacters)
-        arcade.run()
-        isGameRunning = True
-    else:
-        from threading import Thread
-        Thread(target=MainGame, daemon=True)
-        isGameRunning = True
+	def on_show(self):
+		""" This is run once when switch to this view """
+		arcade.set_background_color(GameViewInfo["bgcolor"])
+
+		# Reset the viewport, necessary if we have a scrolling game and we need
+		# to reset the viewport back to the start so we can see what we draw.
+		arcade.set_viewport(0, WINDOW_INFO["width"] - 1, 0, WINDOW_INFO["height"] - 1)
+
+global IS_ARCADE_RUNNING
+IS_ARCADE_RUNNING:bool = False
+
+def start():
+	global window
+	window = arcade.Window(WINDOW_INFO["width"], WINDOW_INFO["height"], WINDOW_INFO["title"])
+
+def showDefaultMainMenuView(bgcolor=arcade.csscolor.DARK_SLATE_BLUE):
+	mainMenuView = DefaultMainMenu(bgcolor, WINDOW_INFO, PROJECT_INFO, lambda: showGameView())
+	window.show_view(mainMenuView)
+	mainMenuView.setup()
+	if not IS_ARCADE_RUNNING:
+		arcade.run()
+
+def showGameView():
+	gameview = GameView()
+	window.show_view(gameview)
+	gameview.setup()
+	if not IS_ARCADE_RUNNING:
+		arcade.run()
+
+def showCustomeView(classname):
+	customView = classname()
+	window.show_view(customView)
+	customView.setup()
+	if not IS_ARCADE_RUNNING:
+		arcade.run()
 
 if gconfig['startGameOnImport']:
-    start()
+	start()
