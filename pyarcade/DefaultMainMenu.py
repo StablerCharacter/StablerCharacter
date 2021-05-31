@@ -7,14 +7,14 @@ PLAY_BUTTON_CLICKED:bool = False
 global QUIT_BUTTON_CLICKED
 QUIT_BUTTON_CLICKED:bool = False
 
-class FlatPlayButton(arcade.gui.UIFlatButton):
-	def on_click(self):
-		PLAY_BUTTON_CLICKED = True
-		print("[EVENTLOG] Play button clicked")
+class FlatButton(arcade.gui.UIFlatButton):
+	def __init__(self, text:str, center_x:int = 0, center_y:int = 0, width:int = 100, height:int = 40, align='center', onClickAction=None, id:str = None, style:arcade.gui.ui_style.UIStyle = None, **kwargs):
+		super().__init__(text, center_x=center_x, center_y=center_y, width=width, height=height, id=id, style=style)
+		self.onClickAction = onClickAction
 
-class FlatQuitButton(arcade.gui.UIFlatButton):
 	def on_click(self):
-		raise SystemExit
+		if not self.onClickAction == None:
+			self.onClickAction()
 
 class DefaultMainMenu(arcade.View):
 	def __init__(self, bgcolor, windowInfo, projectInfo, playButtonAction):
@@ -25,15 +25,19 @@ class DefaultMainMenu(arcade.View):
 		self.UIManager = UIManager()
 		self.playButtonAction = playButtonAction
 
+	def switchView(self):
+		self.UIManager.purge_ui_elements()
+		self.playButtonAction()
+
 	def setup(self):
 		""" Setup this view. Call this function to re-initialize the menu."""
 		self.UIManager.purge_ui_elements()
 
-		button = FlatPlayButton("Play", center_x=(self.WINDOW_INFO["width"] / 2), center_y=(self.WINDOW_INFO["height"] / 2) + 20, width=225)
+		button = FlatButton("Play", onClickAction=lambda: self.switchView(), center_x=(self.WINDOW_INFO["width"] / 2), center_y=(self.WINDOW_INFO["height"] / 2) + 20, width=225)
 		self.UIManager.add_ui_element(button)
 		# button = FlatPlayButton("Settings", center_x=(self.WINDOW_INFO["width"] / 2), center_y=(self.WINDOW_INFO["height"] / 2), width=225)
 		# self.UIManager.add_ui_element(button)
-		button = FlatQuitButton("Quit", center_x=(self.WINDOW_INFO["width"] / 2), center_y=(self.WINDOW_INFO["height"] / 2) - 60, width=225)
+		button = FlatButton("Quit", onClickAction=lambda: self.window.close(), center_x=(self.WINDOW_INFO["width"] / 2), center_y=(self.WINDOW_INFO["height"] / 2) - 60, width=225)
 		self.UIManager.add_ui_element(button)
 
 	def on_draw(self):

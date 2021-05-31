@@ -38,3 +38,4 @@ Sandbox/x64
 *.app
 
 pyarcade/__pycache__/
+*.pyc
