@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: scfw2d
+Version: 0.0.1
+Summary: A tools use for creating Advanced text-based game.
+Home-page: https://github.com/lines-of-codes/StablerCharacter
+Author: lines-of-codes
+Author-email: admin@susite.ga
+License: UNKNOWN
+Project-URL: Bug Reports, https://github.com/lines-of-codes/StablerCharacter/issues
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# StablerCharacter
+ StablerCharacter is a Game engine which is mainly used for creating Advance Text Adventure game
+
+StablerCharacter will bring the New Exprerience of playing a Text adventure game.
+
+## Plan
+StablerCharacter is planned to have a Complete Rendering engine by the end of 2021.
+
+StablerCharacter is based on [Arcade](https://arcade.academy/) library. (2D) and soon will be based on [Ursina engine](https://www.ursinaengine.org/) as well. (3D)
+
+
