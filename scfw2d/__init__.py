@@ -1,3 +1,5 @@
+from .StablerCharacterArcade import *
+
 __all__ = (
 	"__version__",
 	"__email__",
