@@ -1,59 +1,10 @@
 import arcade
 import arcade.gui
 from arcade.gui import UIManager
-from orjson import loads
-from DefaultMainMenu import *
-from Enums import anchorX, anchorY, UIPosition, SoundData, Converter
-from dataclasses import dataclass
+from json import loads
+from .DefaultMainMenu import *
+from .Enums import anchorX, anchorY, UIPosition, SoundData, Converter
 
-@dataclass
-class Dialog:
-	message: str
-	sideObjects: tuple = ()
-	extraEvents: tuple = ()
-
-@dataclass
-class Branch:
-	dialogsList: list
-
-class Chapter:
-	def __init__(self, branchList: dict):
-		self.branchList = branchList
-		self.currentBranch = branchList["main"]
-		self.dialogIndex = 0
-
-	def goToBranch(self, branchName: str):
-		self.currentBranch = branchList[branchName]
-		self.dialogIndex = 0
-
-	def getCurrentDialog(self) -> Dialog:
-		return self.currentBranch.dialogsList[self.dialogIndex]
-
-	def advanceDialogIndex(self):
-		if (len(self.currentBranch.dialogsList) - 1) == self.dialogIndex:
-			return
-		self.dialogIndex += 1
-
-	def getCurrentBranchLength(self) -> int:
-		return len(self.currentBranch.dialogsList)
-
-class StoryManager:
-	def __init__(self, chapters: list):
-		self.chapters: list = chapters
-		self.chapterIndex: int = 0
-
-	def getNow(self) -> Dialog:
-		return self.chapters[self.chapterIndex].getCurrentDialog()
-
-	def getNext(self) -> Dialog:
-		self.chapters[self.chapterIndex].advanceDialogIndex()
-		return self.chapters[self.chapterIndex].getCurrentDialog()
-
-	def getCurrentChapterLength(self) -> int:
-		return self.chapters[self.chapterIndex].getCurrentBranchLength()
-
-	def advanceDialogIndex(self):
-		self.chapters[self.chapterIndex].advanceDialogIndex()
 
 WINDOW_INFO: dict = {'width': 800, 'height': 600, 'title': "Test!"}
 storyList: StoryManager = StoryManager([Chapter(
@@ -136,7 +87,7 @@ class GameView(arcade.View):
 		if key == self.advanceDialogKey:
 			storyList.advanceDialogIndex()
 
-IS_ARCADE_RUNNING:bool = False
+IS_ARCADE_RUNNING: bool = False
 
 def start():
 	global window

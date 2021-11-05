@@ -1,7 +1,6 @@
 from dearpygui import core as guicore, simple as guisimple
-from enum import Enum
 
-class EditorTheme(Enum):
+class EditorTheme:
 	Dark = "Dark"
 	Dark2 = "Dark2"
 	Light = "Light"
@@ -14,7 +13,7 @@ class EditorTheme(Enum):
 	Red = "Red"
 
 guicore.set_main_window_size(1280, 720)
-guicore.set_theme("Dark2")
+guicore.set_theme(EditorTheme.Dark2)
 guicore.set_main_window_title("Story Editor")
 guicore.add_additional_font("Ubuntu-Light.ttf", 18)
 
