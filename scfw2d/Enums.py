@@ -52,7 +52,7 @@ class Converter:
 		pass
 
 	@staticmethod
-	def anchorXtoString(anchorx: anchorX):
+	def anchor_x_to_string(anchorx: anchorX):
 		if anchorx == anchorX.left:
 			return "left"
 		if anchorx == anchorX.center:
@@ -61,7 +61,7 @@ class Converter:
 			return "right"
 
 	@staticmethod
-	def anchorYtoString(anchory: anchorY):
+	def anchor_y_to_string(anchory: anchorY):
 		if anchory == anchorY.top:
 			return "top"
 		if anchory == anchorY.center:

@@ -10,45 +10,46 @@ class Dialog:
 
 @dataclass
 class Branch:
-	dialogsList: list
+	dialogs: list
 
 
 class Chapter:
-	def __init__(self, branchList: dict):
-		self.branchList = branchList
-		self.currentBranch = branchList["main"]
-		self.dialogIndex = 0
+	def __init__(self, name: str, branches: dict):
+		self.name = name
+		self.branches = branches
+		self.current_branch = branches["main"]
+		self.dialog_index = 0
 
-	def goToBranch(self, branchName: str):
-		self.currentBranch = branchList[branchName]
-		self.dialogIndex = 0
+	def go_to_branch(self, branchName: str):
+		self.current_branch = branches[branchName]
+		self.dialog_index = 0
 
-	def getCurrentDialog(self) -> Dialog:
-		return self.currentBranch.dialogsList[self.dialogIndex]
+	def get_current_dialog(self) -> Dialog:
+		return self.current_branch.dialogs[self.dialog_index]
 
-	def advanceDialogIndex(self):
-		if (len(self.currentBranch.dialogsList) - 1) == self.dialogIndex:
+	def advance_dialog_index(self):
+		if (len(self.current_branch.dialogs) - 1) == self.dialog_index:
 			return
-		self.dialogIndex += 1
+		self.dialog_index += 1
 
-	def getCurrentBranchLength(self) -> int:
-		return len(self.currentBranch.dialogsList)
+	def get_current_branch_length(self) -> int:
+		return len(self.current_branch.dialogs)
 
 
 class StoryManager:
 	def __init__(self, chapters: list):
 		self.chapters: list = chapters
-		self.chapterIndex: int = 0
+		self.chapter_index: int = 0
 
-	def getNow(self) -> Dialog:
-		return self.chapters[self.chapterIndex].getCurrentDialog()
+	def get_now(self) -> Dialog:
+		return self.chapters[self.chapter_index].get_current_dialog()
 
-	def getNext(self) -> Dialog:
-		self.chapters[self.chapterIndex].advanceDialogIndex()
-		return self.chapters[self.chapterIndex].getCurrentDialog()
+	def get_next(self) -> Dialog:
+		self.chapters[self.chapter_index].advance_dialog_index()
+		return self.chapters[self.chapter_index].get_current_dialog()
 
-	def getCurrentChapterLength(self) -> int:
-		return self.chapters[self.chapterIndex].getCurrentBranchLength()
+	def get_current_branch_length(self) -> int:
+		return self.chapters[self.chapter_index].get_current_branch_length()
 
-	def advanceDialogIndex(self):
-		self.chapters[self.chapterIndex].advanceDialogIndex()
+	def advance_dialog_index(self):
+		self.chapters[self.chapter_index].advance_dialog_index()
