@@ -1,7 +1,7 @@
 from enum import Enum
 from dataclasses import dataclass
 
-''' Music & Sounds '''
+# --- Music & Sounds ---
 @dataclass
 class SoundData:
 	file_name: str
@@ -10,7 +10,7 @@ class SoundData:
 	loop: bool = False
 	streaming: bool = False
 
-''' Special/Extra Events '''
+# --- Special/Extra Events ---
 class SideObjectEvents(Enum):
 	ClickToContinue = 0
 	ClickToChoose = 1 # Required Parameter: Choice Index
@@ -28,7 +28,7 @@ class Choices:
 	choiceCount: int
 	actions: list
 
-''' Positioning '''
+# --- Positioning ---
 
 class anchorX(Enum):
 	left = 0

@@ -110,7 +110,7 @@ IS_ARCADE_RUNNING: bool = False
 window = None
 
 def start() -> NoReturn:
-	global window
+	global window # skipcq: PYL-W0603
 	window = arcade.Window(WINDOW_INFO["width"], WINDOW_INFO["height"], WINDOW_INFO["title"])
 
 def show_default_main_menu_view(bgcolor: tuple=arcade.csscolor.DARK_SLATE_BLUE) -> NoReturn:
