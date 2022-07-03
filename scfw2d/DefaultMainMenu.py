@@ -3,13 +3,11 @@ import arcade.gui
 from .Enums import anchorX, anchorY, Converter
 
 # Events
-global PLAY_BUTTON_CLICKED
 PLAY_BUTTON_CLICKED: bool = False
-global QUIT_BUTTON_CLICKED
 QUIT_BUTTON_CLICKED: bool = False
 
 class FlatButton(arcade.gui.UIFlatButton):
-	def __init__(self, text: str, x: int = 0, y: int = 0, width: int = 100, height: int = 40, align='center', on_click_action=None, id: str = None, style = None, **kwargs):
+	def __init__(self, text: str, x: int = 0, y: int = 0, width: int = 100, height: int = 40, on_click_action=None, id: str = None, style = None, **kwargs):
 		super().__init__(
 			text=text, 
 			x=x, 
@@ -22,7 +20,7 @@ class FlatButton(arcade.gui.UIFlatButton):
 		)
 		self.on_click_action = on_click_action
 
-	def on_click(self, event: arcade.gui.UIOnClickEvent):
+	def on_click(self, _):
 		if self.on_click_action is not None:
 			self.on_click_action()
 
@@ -45,9 +43,9 @@ class DefaultMainMenu(arcade.View):
 		self.manager.clear()
 
 		buttons = arcade.gui.UIBoxLayout()
-		button = FlatButton("Play", on_click_action=lambda: self.switch_view(), width=225)
+		button = FlatButton("Play", on_click_action=self.switch_view, width=225)
 		buttons.add(button.with_space_around(bottom=20))
-		button = FlatButton("Quit", on_click_action=lambda: self.window.close(), width=225)
+		button = FlatButton("Quit", on_click_action=self.window.close, width=225)
 		buttons.add(button)
 		self.manager.add(
 			arcade.gui.UIAnchorWidget(

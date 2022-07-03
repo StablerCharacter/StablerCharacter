@@ -21,7 +21,7 @@ class Chapter:
 		self.dialog_index = 0
 
 	def go_to_branch(self, branchName: str):
-		self.current_branch = branches[branchName]
+		self.current_branch = self.branches[branchName]
 		self.dialog_index = 0
 
 	def get_current_dialog(self) -> Dialog:

@@ -1,8 +1,6 @@
 import arcade
-import arcade.gui
 from arcade.gui import UIManager
-from json import loads
-from .DefaultMainMenu import *
+from .DefaultMainMenu import DefaultMainMenu, FlatButton
 from .StoryManager import Dialog, Branch, Chapter, StoryManager
 from .Enums import anchorX, anchorY, UIPosition, SoundData, Converter
 from typing import NoReturn
@@ -33,6 +31,7 @@ def add_audio_data(key: str, data: SoundData) -> NoReturn:
 	sound_data_list[key] = data
 
 def set_window_info(new_window_info: dict) -> NoReturn:
+	global WINDOW_INFO # skipcq: PYL-W0603
 	WINDOW_INFO = new_window_info
 
 def set_game_name(gamename: str) -> NoReturn:
@@ -45,7 +44,7 @@ def set_main_text_position(new_text_pos: UIPosition) -> NoReturn:
 	game_view_info["main_text_pos"] = new_text_pos
 
 def set_story(story: StoryManager) -> NoReturn:
-	global story_list
+	global story_list # skipcq: PYL-W0603
 	story_list = story
 
 
@@ -70,7 +69,7 @@ class GameView(arcade.View):
 		self.manager.clear()
 
 		button = FlatButton("Next",
-			on_click_action=lambda:self.on_key_press(arcade.key.ENTER, None),
+			on_click_action=lambda: self.on_key_press(arcade.key.ENTER, None),
 			x=(WINDOW_INFO["width"] - 140),
 			y=40, width=100, anchor_x="right", anchor_y="bottom")
 		self.manager.add(button)
@@ -92,7 +91,8 @@ class GameView(arcade.View):
 		)
 		self.manager.draw()
 
-	def on_show(self):
+	@staticmethod
+	def on_show():
 		""" This is run once when switch to this view """
 		arcade.set_background_color(game_view_info["bgcolor"])
 
@@ -100,20 +100,21 @@ class GameView(arcade.View):
 		# to reset the viewport back to the start so we can see what we draw.
 		arcade.set_viewport(0, WINDOW_INFO["width"] - 1, 0, WINDOW_INFO["height"] - 1)
 
-	def on_key_press(self, key, modifiers):
+	def on_key_press(self, key, _):
 		""" Called when a key have been pressed. """
 
 		if key == self.advance_dialog_key:
 			story_list.advance_dialog_index()
 
 IS_ARCADE_RUNNING: bool = False
+window = None
 
 def start() -> NoReturn:
 	global window
 	window = arcade.Window(WINDOW_INFO["width"], WINDOW_INFO["height"], WINDOW_INFO["title"])
 
 def show_default_main_menu_view(bgcolor: tuple=arcade.csscolor.DARK_SLATE_BLUE) -> NoReturn:
-	main_menu_view = DefaultMainMenu(bgcolor, WINDOW_INFO, PROJECT_INFO, lambda: show_game_view())
+	main_menu_view = DefaultMainMenu(bgcolor, WINDOW_INFO, PROJECT_INFO, show_game_view)
 	window.show_view(main_menu_view)
 	main_menu_view.setup()
 	if not IS_ARCADE_RUNNING:

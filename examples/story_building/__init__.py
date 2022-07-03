@@ -1,4 +1,4 @@
-from arcade import color, csscolor
+from arcade import csscolor
 import scfw2d
 from .story import get_story
 

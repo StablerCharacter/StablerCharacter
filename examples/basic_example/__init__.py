@@ -1,4 +1,4 @@
-from arcade import color, csscolor
+from arcade import csscolor
 import scfw2d
 
 scfw2d.set_game_name("Test Game")
